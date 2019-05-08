@@ -3,6 +3,7 @@ from flask import current_app, url_for
 
 from main import app
 
+from app.firestore_service import get_users
 
 class MainTest(TestCase):
     def create_app(self):
@@ -49,3 +50,13 @@ class MainTest(TestCase):
         response = self.client.post(url_for('auth.login'), data=fake_form)
 
         self.assertRedirects(response, url_for('index'))
+
+    def test_firestore_users(self):
+        count = 0
+
+        users = get_users()
+
+        for user in users:
+            count += 1
+
+        self.assertGreater(count, 0)
