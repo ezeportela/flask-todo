@@ -1,4 +1,4 @@
-from flask import request, make_response, redirect, render_template, session, url_for, flash
+from flask import request, make_response, redirect, render_template, session, url_for, flash, jsonify
 import unittest
 
 from app import create_app
@@ -55,3 +55,14 @@ def hello():
         print(user)
 
     return render_template('hello.html', **context)
+
+@app.route('/api/test')
+def json_test():
+    username = request.args.get('username')
+
+    todos = []
+
+    for todo in get_todos(username):
+        todos.append(todo.to_dict())
+
+    return jsonify(todos)

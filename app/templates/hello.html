@@ -23,4 +23,31 @@
             {{ macros.render_todo(todo) }}
         {% endfor %}
     </ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <div id="app">
+        <ul>
+            <li v-for="todo in todosList">
+                ${todo.description}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                todosList: []
+            },
+            delimiters: ['${', '}'],
+
+            created() {
+                fetch('/api/test?username=eportela').then(res => res.json()).then(todos => {
+                    console.log(todos); 
+                    this.todosList = todos
+                })
+            }
+        })
+    </script>
 {% endblock %}
